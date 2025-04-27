@@ -2,6 +2,7 @@ package com.springboot.mzuplusspringjpa.controller;
 
 import com.springboot.mzuplusspringjpa.dto.ResponseDto;
 import com.springboot.mzuplusspringjpa.dto.manager.ManagerLoginDto;
+import com.springboot.mzuplusspringjpa.dto.manager.ManagerRegisterDto;
 import com.springboot.mzuplusspringjpa.service.manager.ManagerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,5 +19,10 @@ public class ManagerController {
     @PostMapping("/login")
     public ResponseDto login(@RequestBody ManagerLoginDto loginDto){
         return managerService.login(loginDto);
+    }
+
+    @PostMapping("/register")
+    public ResponseDto register(@RequestBody ManagerRegisterDto registerDto){
+        return managerService.register(registerDto);
     }
 }

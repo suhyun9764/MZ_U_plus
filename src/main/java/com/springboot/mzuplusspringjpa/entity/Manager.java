@@ -11,6 +11,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Manager {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +20,11 @@ public class Manager {
     private String password;
     private String email;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @Builder.Default
     private Set<Role> roles = new HashSet<>();
 
+    public void addRole(Role role){
+        roles.add(role);
+    }
 }

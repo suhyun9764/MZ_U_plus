@@ -4,13 +4,17 @@ import com.springboot.mzuplusspringjpa.common.annotation.LogExecutionTime;
 import com.springboot.mzuplusspringjpa.dto.ResponseDto;
 import com.springboot.mzuplusspringjpa.dto.manager.ManagerDto;
 import com.springboot.mzuplusspringjpa.dto.manager.ManagerLoginDto;
+import com.springboot.mzuplusspringjpa.dto.manager.ManagerRegisterDto;
 import com.springboot.mzuplusspringjpa.entity.Manager;
 import com.springboot.mzuplusspringjpa.entity.Role;
 import com.springboot.mzuplusspringjpa.enums.Result;
+import com.springboot.mzuplusspringjpa.repository.RoleRepository;
 import com.springboot.mzuplusspringjpa.repository.manager.ManagerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -19,6 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ManagerServiceImpl implements ManagerService {
     private final ManagerRepository managerRepository;
+    private final RoleRepository roleRepository;
 
     @Override
     @LogExecutionTime
@@ -54,6 +59,29 @@ public class ManagerServiceImpl implements ManagerService {
         return ResponseDto.builder()
                 .result(Result.SUCCESS)
                 .data(managerDto)
+                .build();
+    }
+
+    @Override
+    @Transactional
+    public ResponseDto register(ManagerRegisterDto registerDto) {
+        Result result;
+        try {
+            Manager manager = Manager.builder()
+                    .email(registerDto.getEmail())
+                    .name(registerDto.getEmail())
+                    .build();
+
+            List<Role> role = roleRepository.findRoleByName("manager");
+            manager.addRole(role.get(0));
+            managerRepository.save(manager);
+            result = Result.SUCCESS;
+
+        } catch (Exception e) {
+            result = Result.FAIL;
+        }
+        return ResponseDto.builder()
+                .result(result)
                 .build();
     }
 }
