@@ -28,4 +28,10 @@ public class PhoneModel {
     private int stockQuantity;
     @OneToMany(mappedBy = "phoneModel", fetch = FetchType.LAZY)
     private List<PhoneSale> phoneSaleList;
+    public void decreaseStock() {
+        if (this.stockQuantity <= 0) {
+            throw new IllegalStateException("재고가 없습니다.");
+        }
+        this.stockQuantity -= 1;
+    }
 }
