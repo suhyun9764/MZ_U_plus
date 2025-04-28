@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/sale")
+@RequestMapping("/api")
 public class SaleController {
     private final SaleService saleService;
 
-    @PostMapping("/register")
+    @PostMapping("/sale")
     public ResponseDto register(@RequestBody SaleRegisterDto registerDto){
         return saleService.register(registerDto);
     }
 
-    @GetMapping("/list")
+    @GetMapping("/sale")
     public ResponseDto list(){
         return saleService.list();
     }

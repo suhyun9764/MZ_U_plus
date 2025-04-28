@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/manager")
+@RequestMapping("/api")
 public class ManagerController {
     private final ManagerService managerService;
 
-    @PostMapping("/login")
+    @PostMapping("/manager/login")
     public ResponseDto login(@RequestBody ManagerLoginDto loginDto){
         return managerService.login(loginDto);
     }
 
-    @PostMapping("/register")
+    @PostMapping("/manager")
     public ResponseDto register(@RequestBody ManagerRegisterDto registerDto){
         return managerService.register(registerDto);
     }

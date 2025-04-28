@@ -10,20 +10,20 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/customer")
+@RequestMapping("/api")
 public class CustomerController {
     private final CustomerService customerService;
-    @GetMapping("/list")
+    @GetMapping("/customer")
     public List<Customer> findAll(){
         return customerService.findAll();
     }
 
-    @PostMapping("/save")
+    @PostMapping("/customer")
     public Customer save(@RequestBody Customer customer){
         return customerService.save(customer);
     }
 
-    @GetMapping("/find/privateInfo")
+    @GetMapping("/customer/private-info")
     public Optional<Customer> findByPrivateInfo(@RequestParam("name") String name,
                                                 @RequestParam("rrn_first") String rrnFirst,
                                                 @RequestParam("rrn_Last") String rrnLast){
