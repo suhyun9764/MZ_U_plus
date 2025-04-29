@@ -71,7 +71,8 @@ public class ManagerServiceImpl implements ManagerService {
             checkValidateRegister(registerDto);
             Manager manager = Manager.builder()
                     .email(registerDto.getEmail())
-                    .name(registerDto.getEmail())
+                    .name(registerDto.getName())
+                    .password(registerDto.getPassword())
                     .build();
 
             List<Role> role = roleRepository.findRoleByName("manager");
