@@ -11,6 +11,7 @@ import com.springboot.mzuplusspringjpa.enums.Result;
 import com.springboot.mzuplusspringjpa.repository.RoleRepository;
 import com.springboot.mzuplusspringjpa.repository.manager.ManagerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,6 +68,7 @@ public class ManagerServiceImpl implements ManagerService {
     public ResponseDto register(ManagerRegisterDto registerDto) {
         Result result;
         try {
+            checkValidateRegister(registerDto);
             Manager manager = Manager.builder()
                     .email(registerDto.getEmail())
                     .name(registerDto.getEmail())
@@ -77,11 +79,19 @@ public class ManagerServiceImpl implements ManagerService {
             managerRepository.save(manager);
             result = Result.SUCCESS;
 
-        } catch (Exception e) {
+        }catch (DuplicateKeyException e){
+            result = Result.DUPLICATE;
+        }
+        catch (Exception e) {
             result = Result.FAIL;
         }
         return ResponseDto.builder()
                 .result(result)
                 .build();
+    }
+
+    private void checkValidateRegister(ManagerRegisterDto registerDto) {
+        if(managerRepository.existsByEmail(registerDto.getEmail()))
+            throw new DuplicateKeyException("이미 존재하는 이메일 입니다");
     }
 }

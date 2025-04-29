@@ -13,4 +13,6 @@ public interface ManagerRepository extends JpaRepository<Manager,Integer> {
     @Query("SELECT m from Manager m join fetch m.roles")
 //    @EntityGraph(attributePaths = "roles")
     Optional<Manager> findByEmail(String email);
+
+    boolean existsByEmail(String email);
 }

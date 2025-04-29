@@ -18,9 +18,11 @@ public class Manager {
     private int id;
     private String name;
     private String password;
+
+    @Column(unique = true)
     private String email;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @Builder.Default
     private Set<Role> roles = new HashSet<>();
 
