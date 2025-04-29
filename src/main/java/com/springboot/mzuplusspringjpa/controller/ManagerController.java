@@ -8,7 +8,9 @@ import com.springboot.mzuplusspringjpa.service.manager.ManagerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,10 +30,13 @@ public class ManagerController {
     })
     @PostMapping("/managers/login")
     public ResponseEntity<ResponseDto> login(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "로그인할 매니저 정보")
-                                             @RequestBody ManagerLoginDto loginDto) {
+                                             @RequestBody ManagerLoginDto loginDto,
+                                             HttpSession session) {
         ResponseDto responseDto = managerService.login(loginDto);
-        if (responseDto.getResult().equals(Result.SUCCESS))
+        if (responseDto.getResult().equals(Result.SUCCESS)) {
+            session.setAttribute("loginManager",responseDto.getData());
             return ResponseEntity.ok().body(responseDto);
+        }
 
         return ResponseEntity.internalServerError().build();
     }
