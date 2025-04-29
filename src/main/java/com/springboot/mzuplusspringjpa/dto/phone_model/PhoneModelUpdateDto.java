@@ -1,13 +1,11 @@
 package com.springboot.mzuplusspringjpa.dto.phone_model;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class PhoneModelDto {
+public class PhoneModelUpdateDto {
     private int id;
     private String manufacturer;
     private String name;
