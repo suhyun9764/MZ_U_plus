@@ -5,6 +5,9 @@ import com.springboot.mzuplusspringjpa.dto.manager.ManagerLoginDto;
 import com.springboot.mzuplusspringjpa.dto.manager.ManagerRegisterDto;
 import com.springboot.mzuplusspringjpa.enums.Result;
 import com.springboot.mzuplusspringjpa.service.manager.ManagerService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,22 +18,32 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@Tag(name = "Manger API", description = "매니저 관리 API")
 public class ManagerController {
     private final ManagerService managerService;
 
-    @PostMapping("/manager/login")
-    public ResponseEntity<ResponseDto> login(@RequestBody ManagerLoginDto loginDto){
+    @Operation(summary = "매니저 로그인 API", responses = {
+            @ApiResponse(responseCode = "200", description = "로그인 성공"),
+            @ApiResponse(responseCode = "500", description = "로그인 실패"),
+    })
+    @PostMapping("/managers/login")
+    public ResponseEntity<ResponseDto> login(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "로그인할 매니저 정보")
+                                             @RequestBody ManagerLoginDto loginDto) {
         ResponseDto responseDto = managerService.login(loginDto);
-        if(responseDto.getResult().equals(Result.SUCCESS))
+        if (responseDto.getResult().equals(Result.SUCCESS))
             return ResponseEntity.ok().body(responseDto);
 
         return ResponseEntity.internalServerError().build();
     }
-
-    @PostMapping("/manager")
-    public ResponseEntity<ResponseDto> register(@RequestBody ManagerRegisterDto registerDto){
+    @Operation(summary = "매니저 회원가입 API", responses = {
+            @ApiResponse(responseCode = "200", description = "회원가입 성공"),
+            @ApiResponse(responseCode = "500", description = "회원가입 실패"),
+    })
+    @PostMapping("/managers")
+    public ResponseEntity<ResponseDto> register(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "가입할 매니저 정보")
+                                                @RequestBody ManagerRegisterDto registerDto) {
         ResponseDto responseDto = managerService.register(registerDto);
-        if(responseDto.getResult().equals(Result.SUCCESS))
+        if (responseDto.getResult().equals(Result.SUCCESS))
             return ResponseEntity.ok().body(responseDto);
 
         return ResponseEntity.internalServerError().build();
