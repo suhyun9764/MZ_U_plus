@@ -1,0 +1,10 @@
+package com.springboot.mzuplusspringjpa.dto.customer;
+
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+@Builder
+public class PhoneNumberResponseDto {
+    private String phoneNumber;
+}

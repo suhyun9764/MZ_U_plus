@@ -2,7 +2,7 @@ package com.springboot.mzuplusspringjpa.controller;
 
 import com.springboot.mzuplusspringjpa.dto.ResponseDto;
 import com.springboot.mzuplusspringjpa.dto.customer.CustomerRegisterDto;
-import com.springboot.mzuplusspringjpa.entity.Customer;
+import com.springboot.mzuplusspringjpa.dto.customer.PhoneNumberChangeRequestDto;
 import com.springboot.mzuplusspringjpa.enums.Result;
 import com.springboot.mzuplusspringjpa.service.customer.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -64,6 +64,24 @@ public class CustomerController {
 
         if (responseDto.getResult().equals(Result.NOT_FOUND))
             return ResponseEntity.notFound().build();
+
+        return ResponseEntity.internalServerError().build();
+    }
+
+    @GetMapping("/customers/number")
+    public ResponseEntity<ResponseDto> generateNumber(@RequestParam String last4Digits){
+        ResponseDto responseDto = customerService.generateNumber(last4Digits);
+        if (responseDto.getResult().equals(Result.SUCCESS))
+            return ResponseEntity.ok().body(responseDto);
+
+        return ResponseEntity.internalServerError().build();
+    }
+
+    @PutMapping("/customers/number")
+    public ResponseEntity<ResponseDto> registerNewPhoneNumber(@RequestBody PhoneNumberChangeRequestDto dto){
+        ResponseDto responseDto = customerService.registerNewPhoneNumber(dto);
+        if (responseDto.getResult().equals(Result.SUCCESS))
+            return ResponseEntity.ok().body(responseDto);
 
         return ResponseEntity.internalServerError().build();
     }

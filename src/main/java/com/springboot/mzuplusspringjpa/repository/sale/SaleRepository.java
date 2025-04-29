@@ -17,7 +17,7 @@ public interface SaleRepository extends JpaRepository<PhoneSale,Integer> {
                 s.customer.id, s.customer.address, s.customer.email, s.customer.name, s.customer.phoneNumber, s.customer.rrnFirst
             ),
             new com.springboot.mzuplusspringjpa.dto.phone_model.PhoneModelDto(
-                s.phoneModel.id, s.phoneModel.manufacturer, s.phoneModel.name, s.phoneModel.color, s.phoneModel.price, s.phoneModel.stockQuantity, s.phoneModel.price
+                s.phoneModel.id, s.phoneModel.manufacturer, s.phoneModel.name, s.phoneModel.color, s.phoneModel.stockQuantity, s.phoneModel.storageCapacity, s.phoneModel.price
             )
         )
         from PhoneSale s

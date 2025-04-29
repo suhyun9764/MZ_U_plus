@@ -3,6 +3,8 @@ package com.springboot.mzuplusspringjpa.service.customer;
 import com.springboot.mzuplusspringjpa.dto.ResponseDto;
 import com.springboot.mzuplusspringjpa.dto.customer.CustomerDto;
 import com.springboot.mzuplusspringjpa.dto.customer.CustomerRegisterDto;
+import com.springboot.mzuplusspringjpa.dto.customer.PhoneNumberChangeRequestDto;
+import com.springboot.mzuplusspringjpa.dto.customer.PhoneNumberResponseDto;
 import com.springboot.mzuplusspringjpa.entity.Customer;
 import com.springboot.mzuplusspringjpa.enums.Result;
 import com.springboot.mzuplusspringjpa.repository.customer.CustomerRepository;
@@ -103,5 +105,50 @@ public class CustomerServiceImpl implements CustomerService {
         return ResponseDto.builder()
                 .result(result)
                 .build();
+    }
+
+    @Override
+    public ResponseDto generateNumber(String last4Digits) {
+        String phoneNumber = generatePhoneNumber(last4Digits);
+        while (customerRepository.existsCustomerByPhoneNumber(phoneNumber)) {
+            phoneNumber = generatePhoneNumber(last4Digits);
+        }
+
+        return ResponseDto.builder()
+                .result(Result.SUCCESS)
+                .data(PhoneNumberResponseDto.builder()
+                        .phoneNumber(phoneNumber)
+                        .build())
+                .build();
+    }
+
+    @Override
+    @Transactional
+    public ResponseDto registerNewPhoneNumber(PhoneNumberChangeRequestDto dto) {
+        ResponseDto responseDto;
+        try {
+            customerRepository.registerNewPhoneNumber(dto.getCustomerId(),dto.getPhoneNumber());
+            responseDto = ResponseDto.builder()
+                    .data(PhoneNumberResponseDto.builder()
+                            .phoneNumber(dto.getPhoneNumber())
+                            .build())
+                    .result(Result.SUCCESS)
+                    .build();
+        }catch (Exception e){
+            responseDto = ResponseDto.builder()
+                    .result(Result.FAIL)
+                    .build();
+        }
+        return responseDto;
+    }
+
+    private static String generatePhoneNumber(String last4Digits) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("010");
+        int secondPart = (int) (Math.random() * 9000) + 1000;  // 1000 ~ 9999 사이의 숫자
+        sb.append(secondPart);
+        sb.append(last4Digits);
+        String phoneNumber = sb.toString();
+        return phoneNumber;
     }
 }
