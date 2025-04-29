@@ -1,5 +1,6 @@
 package com.springboot.mzuplusspringjpa.dto.customer;
 
+import com.springboot.mzuplusspringjpa.dto.sale.SaleDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
