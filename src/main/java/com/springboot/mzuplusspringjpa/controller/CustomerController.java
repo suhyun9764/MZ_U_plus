@@ -1,6 +1,7 @@
 package com.springboot.mzuplusspringjpa.controller;
 
 import com.springboot.mzuplusspringjpa.dto.ResponseDto;
+import com.springboot.mzuplusspringjpa.dto.customer.CustomerRegisterDto;
 import com.springboot.mzuplusspringjpa.entity.Customer;
 import com.springboot.mzuplusspringjpa.enums.Result;
 import com.springboot.mzuplusspringjpa.service.customer.CustomerService;
@@ -37,10 +38,10 @@ public class CustomerController {
             @ApiResponse(responseCode = "500", description = "서버 오류")}
     )
     @PostMapping("/customers")
-    public ResponseEntity<ResponseDto> save(@RequestBody Customer customer) {
-        ResponseDto responseDto = customerService.save(customer);
+    public ResponseEntity<ResponseDto> save(@RequestBody CustomerRegisterDto dto) {
+        ResponseDto responseDto = customerService.save(dto);
         if (responseDto.getResult().equals(Result.SUCCESS))
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(responseDto);
 
         return ResponseEntity.internalServerError().build();
     }

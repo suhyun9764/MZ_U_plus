@@ -2,6 +2,7 @@ package com.springboot.mzuplusspringjpa.service.customer;
 
 import com.springboot.mzuplusspringjpa.dto.ResponseDto;
 import com.springboot.mzuplusspringjpa.dto.customer.CustomerDto;
+import com.springboot.mzuplusspringjpa.dto.customer.CustomerRegisterDto;
 import com.springboot.mzuplusspringjpa.entity.Customer;
 import com.springboot.mzuplusspringjpa.enums.Result;
 import com.springboot.mzuplusspringjpa.repository.customer.CustomerRepository;
@@ -18,6 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
+
     @Override
     public ResponseDto findAll() {
         ResponseDto responseDto;
@@ -27,16 +29,16 @@ public class CustomerServiceImpl implements CustomerService {
             customerList.forEach(customer -> {
                 customerDtoList.add(CustomerDto.builder()
                         .name(customer.getName())
-                                .id(customer.getId())
-                                .email(customer.getEmail())
-                                .address(customer.getAddress())
+                        .id(customer.getId())
+                        .email(customer.getEmail())
+                        .address(customer.getAddress())
                         .build());
             });
             responseDto = ResponseDto.builder()
                     .result(Result.SUCCESS)
                     .data(customerDtoList)
                     .build();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             responseDto = ResponseDto.builder()
                     .result(Result.FAIL)
@@ -64,13 +66,12 @@ public class CustomerServiceImpl implements CustomerService {
                     .result(Result.SUCCESS)
                     .data(customerDto)
                     .build();
-        }catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             e.printStackTrace();
             responseDto = ResponseDto.builder()
                     .result(Result.NOT_FOUND)
                     .build();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             responseDto = ResponseDto.builder()
                     .result(Result.FAIL)
@@ -82,12 +83,20 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional
-    public ResponseDto save(Customer customer) {
+    public ResponseDto save(CustomerRegisterDto dto) {
         Result result;
         try {
+            Customer customer = Customer.builder()
+                    .address(dto.getAddress())
+                    .name(dto.getName())
+                    .rrnFirst(dto.getRrnFirst())
+                    .rrnLast(dto.getRrnLast())
+                    .email(dto.getEmail())
+                    .phoneNumber(dto.getPhoneNumber())
+                    .build();
             customerRepository.save(customer);
             result = Result.SUCCESS;
-        }catch (Exception e){
+        } catch (Exception e) {
             result = Result.FAIL;
         }
         return ResponseDto.builder()
