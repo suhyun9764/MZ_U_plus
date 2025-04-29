@@ -57,7 +57,7 @@ public class CustomerController {
                                                          @Parameter(description = "주민번호 앞자리", example = "980101")
                                                          @RequestParam("rrn_first") String rrnFirst,
                                                          @Parameter(description = "주민번호 뒷자리", example = "11111111")
-                                                         @RequestParam("rrn_Last") String rrnLast) {
+                                                         @RequestParam("rrn_last") String rrnLast) {
         ResponseDto responseDto = customerService.findByPrivateInfo(name, rrnFirst, rrnLast);
         if (responseDto.getResult().equals(Result.SUCCESS))
             return ResponseEntity.ok().body(responseDto);

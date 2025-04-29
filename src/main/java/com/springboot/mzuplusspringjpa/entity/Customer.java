@@ -26,6 +26,6 @@ public class Customer {
     @Column(name = "phone_number", unique = true)
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private List<PhoneSale> phoneSaleList = new ArrayList<>();
 }
